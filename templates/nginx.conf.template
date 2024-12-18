@@ -21,6 +21,7 @@ http {
         server_name PLACEHOLDER_DOMAIN1;
 
         index index.php index.html index.htm;
+        port_in_redirect off;
 
         location / {
             try_files $uri $uri/ //index.php?$args;
