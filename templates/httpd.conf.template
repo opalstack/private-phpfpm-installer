@@ -1,0 +1,77 @@
+LoadModule mpm_event_module          /usr/lib64/httpd/modules/mod_mpm_event.so
+
+LoadModule unixd_module              /usr/lib64/httpd/modules/mod_unixd.so
+LoadModule authz_core_module         /usr/lib64/httpd/modules/mod_authz_core.so
+LoadModule proxy_module              /usr/lib64/httpd/modules/mod_proxy.so
+LoadModule proxy_fcgi_module         /usr/lib64/httpd/modules/mod_proxy_fcgi.so
+LoadModule mime_module               /usr/lib64/httpd/modules/mod_mime.so
+LoadModule dir_module                /usr/lib64/httpd/modules/mod_dir.so
+LoadModule alias_module              /usr/lib64/httpd/modules/mod_alias.so
+LoadModule autoindex_module          /usr/lib64/httpd/modules/mod_autoindex.so
+LoadModule log_config_module         /usr/lib64/httpd/modules/mod_log_config.so
+LoadModule rewrite_module            /usr/lib64/httpd/modules/mod_rewrite.so
+#LoadModule authz_host_module         /usr/lib64/httpd/modules/mod_authz_host.so
+#LoadModule authz_groupfile_module    /usr/lib64/httpd/modules/mod_authz_groupfile.so
+#LoadModule authz_owner_module        /usr/lib64/httpd/modules/mod_authz_owner.so
+#LoadModule authz_user_module         /usr/lib64/httpd/modules/mod_authz_user.so
+#LoadModule proxy_connect_module      /usr/lib64/httpd/modules/mod_proxy_connect.so
+#LoadModule proxy_http_module         /usr/lib64/httpd/modules/mod_proxy_http.so
+#LoadModule proxy_ftp_module          /usr/lib64/httpd/modules/mod_proxy_ftp.so
+#LoadModule remoteip_module           /usr/lib64/httpd/modules/mod_remoteip.so
+#LoadModule dav_module                /usr/lib64/httpd/modules/mod_dav.so
+#LoadModule dav_fs_module             /usr/lib64/httpd/modules/mod_dav_fs.so
+#LoadModule auth_basic_module         /usr/lib64/httpd/modules/mod_auth_basic.so
+#LoadModule auth_digest_module        /usr/lib64/httpd/modules/mod_auth_digest.so
+#LoadModule authn_file_module         /usr/lib64/httpd/modules/mod_authn_file.so
+#LoadModule cgid_module               /usr/lib64/httpd/modules/mod_cgid.so
+#LoadModule deflate_module            /usr/lib64/httpd/modules/mod_deflate.so
+#LoadModule setenvif_module           /usr/lib64/httpd/modules/mod_setenvif.so
+#LoadModule headers_module            /usr/lib64/httpd/modules/mod_headers.so
+#LoadModule include_module            /usr/lib64/httpd/modules/mod_include.so
+#LoadModule expires_module            /usr/lib64/httpd/modules/mod_expires.so
+#LoadModule env_module                /usr/lib64/httpd/modules/mod_env.so
+#LoadModule actions_module            /usr/lib64/httpd/modules/mod_actions.so
+#LoadModule negotiation_module        /usr/lib64/httpd/modules/mod_negotiation.so
+#LoadModule speling_module            /usr/lib64/httpd/modules/mod_speling.so
+#LoadModule access_compat_module      /usr/lib64/httpd/modules/mod_access_compat.so
+
+ServerName 127.0.0.1:PLACEHOLDER_PORT
+ServerRoot PLACEHOLDER_PREFIX
+DefaultRuntimeDir PLACEHOLDER_PREFIX/var/run
+Listen 127.0.0.1:PLACEHOLDER_PORT
+KeepAliveTimeout 3
+KeepAlive Off
+MaxConnectionsPerChild 5000
+Timeout 60
+PidFile PLACEHOLDER_PREFIX/var/run/httpd.pid
+TypesConfig /etc/mime.types
+LogLevel warn
+LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+CustomLog PLACEHOLDER_PREFIX/log/apache_PLACEHOLDER_STACKNAME_access.log combined
+ErrorLog PLACEHOLDER_PREFIX/log/apache_PLACEHOLDER_STACKNAME_error.log
+
+<VirtualHost 127.0.0.1:PLACEHOLDER_PORT>
+  ServerName PLACEHOLDER_DOMAIN1
+  #ServerAlias www.PLACEHOLDER_DOMAIN1
+  DocumentRoot PLACEHOLDER_APPDIR1
+  DirectoryIndex index.html index.htm index.cgi index.php
+  ProxyPreserveHost on
+  AddDefaultCharset utf-8
+
+  <Proxy "unix:/PLACEHOLDER_PREFIX/var/run/php-fpm.sock">
+  </Proxy>
+
+  Include /etc/httpd/conf.modules.d/autoindex.conf
+  <Directory PLACEHOLDER_APPDIR1>
+    AllowOverride all
+    <FilesMatch \.ht(access|passwd)>
+      Require all denied
+    </FilesMatch>
+    <FilesMatch (\.user\.ini|php\.ini)>
+      Require all denied
+    </FilesMatch>
+    <FilesMatch \.php$>
+      SetHandler "proxy:unix:PLACEHOLDER_PREFIX/var/run/php-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+  </Directory>
+</VirtualHost>
