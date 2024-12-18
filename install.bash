@@ -25,6 +25,8 @@ fpms=(
   ['7.4']='/opt/remi/php74/root/usr/sbin/php-fpm'
   ['8.0']='/opt/remi/php80/root/usr/sbin/php-fpm'
   ['8.1']='/opt/remi/php81/root/usr/sbin/php-fpm'
+  ['8.2']='/opt/remi/php81/root/usr/sbin/php-fpm'
+  ['8.3']='/opt/remi/php81/root/usr/sbin/php-fpm'
 )
 if [[ -z ${fpms[$PHP_VERSION]} ]]; then
   echo "Unrecognized PHP version: $PHP_VERSION. Choose from: $(printf '%s\n, \n' "${!fpms[@]}" | head -n-1 | paste -sd '')"
