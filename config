@@ -1,12 +1,17 @@
 #!bash
 
+# change these to your stack app's name and port
 STACKNAME="phpfpm"
-PREFIX="$HOME/apps/$STACKNAME"
-LOGDIR="$HOME/logs/apps/$STACKNAME"
 PORT="77777"
 
+# change these to the domain and directory you want the stack to serve
 DOMAIN1="mydomain.com"
 APPDIR1="$HOME/apps/app1"
 
-SERVER_TYPE="apache"
-PHP_VERSION="8.0"
+# change these as needed, nginx or apache, php versions 5.6, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3
+SERVER_TYPE="nginx"
+PHP_VERSION="8.3"
+
+# no need to change these
+PREFIX="$HOME/apps/$STACKNAME"
+LOGDIR="$HOME/logs/apps/$STACKNAME"
