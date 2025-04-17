@@ -8,7 +8,7 @@ PORT="77777"
 DOMAIN1="mydomain.com"
 APPDIR1="$HOME/apps/app1"
 
-# change these as needed, nginx or apache, php versions 5.6, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3
+# change these as needed, nginx or apache, php versions 5.6, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4
 SERVER_TYPE="nginx"
 PHP_VERSION="8.3"
 
